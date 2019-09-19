@@ -33,6 +33,10 @@ public class ControladorEmpresa {
         boolean resultado = DaoEmpresa.inserir(objeto);
         if (resultado) {
             JOptionPane.showMessageDialog(null, "Inserido com sucesso!");
+            if (man.listagem != null) {
+     atualizarTabela(man.listagem.tabela); //atualizar a tabela da listagem
+}
+man.dispose();//fechar a tela da manutenção
         } else {
             JOptionPane.showMessageDialog(null, "Erro!");
         }
@@ -50,6 +54,10 @@ public class ControladorEmpresa {
         boolean resultado = DaoEmpresa.alterar(objeto);
         if (resultado) {
             JOptionPane.showMessageDialog(null, "Alterado com sucesso!");
+            if (man.listagem != null) {
+     atualizarTabela(man.listagem.tabela); //atualizar a tabela da listagem
+}
+man.dispose();//fechar a tela da manutenção
         } else {
             JOptionPane.showMessageDialog(null, "Erro!");
         }
@@ -64,6 +72,10 @@ public class ControladorEmpresa {
         boolean resultado = DaoEmpresa.excluir(objeto);
         if (resultado) {
             JOptionPane.showMessageDialog(null, "Excluído com sucesso!");
+            if (man.listagem != null) {
+     atualizarTabela(man.listagem.tabela); //atualizar a tabela da listagem
+}
+man.dispose();//fechar a tela da manutenção
         } else {
             JOptionPane.showMessageDialog(null, "Erro!");
         }
@@ -72,9 +84,9 @@ public class ControladorEmpresa {
     public static void atualizarTabela(JTable tabela) {
         DefaultTableModel modelo = new DefaultTableModel();
         //definindo o cabeçalho da tabela
-        modelo.addColumn("Codigo");
-        modelo.addColumn("Nome");
-        modelo.addColumn("Descrição");
+        modelo.addColumn("Código");
+        modelo.addColumn("Nome Fantasia");
+        modelo.addColumn("Razão Social");
         List<Empresa> resultados = DaoEmpresa.consultar();
         for (Empresa objeto : resultados) {
             Vector linha = new Vector();
@@ -86,5 +98,16 @@ public class ControladorEmpresa {
             modelo.addRow(linha); //adicionando a linha na tabela
         }
         tabela.setModel(modelo);
+    }
+    
+    public static void atualizaCampos(ManutencaoEmpresa man, int pk){ 
+        Empresa objeto = DaoEmpresa.consultar(pk);
+        //Definindo os valores do campo na tela (um para cada atributo/campo)
+        man.jtfCodigo.setText(objeto.getCodigo().toString());
+        man.jtfNomefantasia.setText(objeto.getNomefantasia());
+        man.jtfRazaosocial.setText(objeto.getRazaosocial());
+        
+        man.jtfCodigo.setEnabled(false); //desabilitando o campo código
+        man.btnAdicionar.setEnabled(false); //desabilitando o botão adicionar
     }
 }
